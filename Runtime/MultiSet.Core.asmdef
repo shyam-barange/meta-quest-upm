@@ -1,0 +1,20 @@
+{
+  "name": "MultiSet.Runtime",
+  "rootNamespace": "MultiSet",
+  "references": [
+    "Unity.XR.Management",
+    "Unity.XR.OpenXR",
+    "Meta.XR.MRUtilityKit",
+    "Unity.Cloud.Draco",
+    "Unity.Cloud.glTFast"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
