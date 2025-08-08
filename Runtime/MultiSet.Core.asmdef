@@ -4,9 +4,12 @@
   "references": [
     "Unity.XR.Management",
     "Unity.XR.OpenXR",
+    "Unity.InputSystem",
     "Meta.XR.MRUtilityKit",
+    "Meta.XR.SDK.Core",
     "Unity.Cloud.Draco",
-    "Unity.Cloud.glTFast"
+    "Unity.Cloud.glTFast",
+    "Unity.XR.Oculus"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
@@ -15,6 +18,12 @@
   "precompiledReferences": [],
   "autoReferenced": true,
   "defineConstraints": [],
-  "versionDefines": [],
+  "versionDefines": [
+    {
+      "name": "com.unity.inputsystem",
+      "expression": "1.0.0",
+      "define": "ENABLE_INPUT_SYSTEM"
+    }
+  ],
   "noEngineReferences": false
 }
