@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3447024575736539797}
-  - component: {fileID: 7805470195598751383}
-  - component: {fileID: 3751669784030661151}
+  - component: {fileID: 3394933635129258753}
+  - component: {fileID: 8300747780737540201}
   - component: {fileID: 8057667548746870226}
   - component: {fileID: 703124443102591713}
   - component: {fileID: 6016896019782396370}
-  - component: {fileID: 1382335477795257213}
+  - component: {fileID: 6806061997199467047}
   m_Layer: 0
   m_Name: MultisetSdkManager
   m_TagString: Untagged
@@ -37,7 +37,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7805470195598751383
+--- !u!114 &3394933635129258753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,13 +46,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 38449817156651694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -650815242, guid: 5e2b4f19fefec46a08626f272dff56e8, type: 3}
+  m_Script: {fileID: -650815242, guid: cda977b25375841f1a8e0a133b2effa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientId: f423e6cd-1fd3-42f0-b554-61f2a4f966fd
-  clientSecret: eed07a68b5a2a50d442b350c38fc3eae766eabd9cbb49f97f5769f97ab484b94
+  clientId: 
+  clientSecret: 
   runtimeAuthentication: 0
---- !u!114 &3751669784030661151
+--- !u!114 &8300747780737540201
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,18 +61,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 38449817156651694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -701210482, guid: 5e2b4f19fefec46a08626f272dff56e8, type: 3}
+  m_Script: {fileID: -701210482, guid: cda977b25375841f1a8e0a133b2effa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_statusText: {fileID: 0}
-  m_debugInfoText: {fileID: 0}
   m_mapSpace: {fileID: 0}
   localizationType: 0
-  mapOrMapsetCode: 
+  mapOrMapsetCode: MAP_QJNT67BOCYX6
   autoLocalize: 1
   backgroundLocalization: 1
   bgLocalizationDuration: 60
-  confidenceCheck: 1
+  confidenceCheck: 0
   _confidenceThreshold: 0.3
   showAlert: 1
   LocalizationInit:
@@ -132,10 +130,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1382335477795257213}
-        m_TargetAssemblyTypeName: MultiSet.MapMeshHandler, MultiSetSDK
-        m_MethodName: LocalizationSuccess
-        m_Mode: 1
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -144,10 +142,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 6806061997199467047}
+        m_TargetAssemblyTypeName: MultiSet.MapMeshHandler, MultiSetQuestSDK
+        m_MethodName: LocalizationSuccess
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -159,18 +157,6 @@ MonoBehaviour:
   LocalizationFailure:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -196,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_actionButton: 1
-  m_localizationManager: {fileID: 3751669784030661151}
+  m_localizationManager: {fileID: 8300747780737540201}
 --- !u!114 &703124443102591713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bd37078d6c74e8ba696aa5c82bdbc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationManager: {fileID: 3751669784030661151}
+  localizationManager: {fileID: 8300747780737540201}
   frameCaptureManager: {fileID: 6016896019782396370}
   questInputHandler: {fileID: 8057667548746870226}
 --- !u!114 &6016896019782396370
@@ -226,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_webCamTextureManager: {fileID: 0}
   m_webCamImage: {fileID: 0}
---- !u!114 &1382335477795257213
+--- !u!114 &6806061997199467047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,7 +221,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 38449817156651694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1654975246, guid: 5e2b4f19fefec46a08626f272dff56e8, type: 3}
+  m_Script: {fileID: 1654975246, guid: cda977b25375841f1a8e0a133b2effa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   meshVisualizationOption: 0
