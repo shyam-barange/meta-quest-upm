@@ -28,10 +28,8 @@ public class NavigationUIController : MonoBehaviour
     [Tooltip("Parent GameObject of POIs selection UI")]
     public GameObject DestinationSelectUI;
 
-
-
     [Tooltip("Navigation Path Material")]
-    public Material material;
+    private Material material;
 
     [Space(20)]
     [SerializeField] private OVRInput.RawButton m_openListButton = OVRInput.RawButton.B;
@@ -55,6 +53,8 @@ public class NavigationUIController : MonoBehaviour
         DestinationSelectUI.SetActive(false);
 
         destinationName.text = "";
+
+        material = Resources.Load<Material>("Materials/NavPathMaterial");
     }
 
     void Update()
