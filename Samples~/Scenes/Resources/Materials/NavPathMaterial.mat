@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: NavPathMaterial
-  m_Shader: {fileID: 4800000, guid: 8b25da5dcdd3b4e04b5ef9478fc90e03, type: 3}
+  m_Shader: {fileID: 4800000, guid: 2416895fcb8fa439aa13dda858881661, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

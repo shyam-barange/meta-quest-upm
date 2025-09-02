@@ -1067,16 +1067,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4125561443100300578, guid: 1857ce5e5e71e4f12b2c444fda4771c9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 1857ce5e5e71e4f12b2c444fda4771c9, type: 3}
 --- !u!4 &717496172 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 260162862028363361, guid: 1857ce5e5e71e4f12b2c444fda4771c9, type: 3}
-  m_PrefabInstance: {fileID: 717496171}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &717496173 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 260162862028363360, guid: 1857ce5e5e71e4f12b2c444fda4771c9, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5279102498747865225, guid: 1857ce5e5e71e4f12b2c444fda4771c9, type: 3}
   m_PrefabInstance: {fileID: 717496171}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &726924700
@@ -2565,7 +2563,7 @@ PrefabInstance:
     - target: {fileID: 8300747780737540201, guid: 7d7db1522ea264a50b02f09f6143d035, type: 3}
       propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 717496173}
+      objectReference: {fileID: 0}
     - target: {fileID: 8300747780737540201, guid: 7d7db1522ea264a50b02f09f6143d035, type: 3}
       propertyPath: LocalizationRequested.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
