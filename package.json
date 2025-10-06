@@ -17,15 +17,6 @@
         "url": "https://github.com/shyam-barange/meta-quest-upm.git",
         "type": "git"
     },
-    "scopedRegistries": [
-        {
-            "name": "Meta",
-            "url": "https://npm.developer.oculus.com",
-            "scopes": [
-                "com.meta.xr"
-            ]
-        }
-    ],
     "dependencies": {
         "com.meta.xr.sdk.core": "78.0.0",
         "com.meta.xr.mrutilitykit": "78.0.0",
