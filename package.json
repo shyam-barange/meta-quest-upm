@@ -1,10 +1,10 @@
 {
   "name": "com.multiset.sdk.quest",
-  "version": "1.8.2",
+  "version": "1.9.2",
   "displayName": "MultiSet Quest SDK",
   "description": "The MultiSet Quest SDK is a Unity-based development kit designed specifically for Meta Quest headsets. It provides developers with seamless integration to MultiSet's Visual Positioning System (VPS), enabling precise real-time localization, pose visualization, and camera access within virtual and mixed reality applications.",
   "unity": "6000.0",
-  "unityRelease": "55f1",
+  "unityRelease": "58f1",
   "documentationUrl": "https://docs.multiset.ai",
   "changelogUrl": "https://github.com/MultiSet-AI/multiset-quest-sdk/releases",
   "licensesUrl": "https://github.com/MultiSet-AI/multiset-quest-sdk/blob/main/LICENSE",
