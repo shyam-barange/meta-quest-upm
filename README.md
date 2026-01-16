@@ -47,9 +47,10 @@ The SDK automatically installs these essential packages:
 - Unity Cloud - Draco (5.4.2)
 - Unity Cloud - glTFast (6.15.1)
 - Meta XR Core SDK (81.0.0)
-- Meta MR Utility Kit (81.0.0)
 - XR Plugin Management (4.5.4)
 - OpenXR Plugin (1.16.1)
+
+> **Note:** If you need room scanning features (EffectMesh), install Meta MR Utility Kit separately via Package Manager.
 
 ## 🎯 Import Sample Scenes
 
