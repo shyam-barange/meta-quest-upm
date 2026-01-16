@@ -19,13 +19,13 @@ namespace MultiSet
         private SingleFrameLocalizationManager m_singleFrameLocalizationManager;
         private MapLocalizationManager m_mapLocalizationManager;
 
-        private ModelsetTrackingManager m_modelsetTrackingManager;
+        private ObjectTrackingManager m_objectTrackingManager;
 
         private void Awake()
         {
             m_mapLocalizationManager = FindFirstObjectByType<MapLocalizationManager>();
             m_singleFrameLocalizationManager = FindFirstObjectByType<SingleFrameLocalizationManager>();
-            m_modelsetTrackingManager = FindFirstObjectByType<ModelsetTrackingManager>();
+            m_objectTrackingManager = FindFirstObjectByType<ObjectTrackingManager>();
         }
 
         private void Update()
@@ -49,9 +49,9 @@ namespace MultiSet
                 m_singleFrameLocalizationManager.LocalizeFrame();
             }
 
-            if (m_modelsetTrackingManager != null)
+            if (m_objectTrackingManager != null)
             {
-                m_modelsetTrackingManager.StartFrameTracking();
+                m_objectTrackingManager.StartObjectTracking();
             }
         }
 
