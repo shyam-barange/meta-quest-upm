@@ -18,10 +18,9 @@
         "type": "git"
     },
     "dependencies": {
-        "com.meta.xr.sdk.core": "83.0.1",
-        "com.meta.xr.mrutilitykit": "83.0.1",
-        "com.meta.xr.sdk.interaction.ovr": "83.0.1",
-        "com.meta.xr.sdk.passthroughcameraaccess": "83.0.1",
+        "com.meta.xr.sdk.core": "81.0.0",
+        "com.meta.xr.mrutilitykit": "81.0.0",
+        "com.meta.xr.sdk.interaction.ovr": "81.0.0",
         "com.unity.cloud.draco": "5.4.2",
         "com.unity.cloud.gltfast": "6.15.1",
         "com.unity.xr.management": "4.5.4",
