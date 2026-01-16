@@ -1,8 +1,8 @@
 # MultiSet Quest SDK - Installation Guide
 
-![MultiSet SDK](https://img.shields.io/badge/Unity-6000.0.58f1+-blue) ![Platform](https://img.shields.io/badge/Platform-Meta%20Quest-green) ![Version](https://img.shields.io/badge/Version-1.8.0-orange)
+![MultiSet SDK](https://img.shields.io/badge/Unity-6000.0.58f1+-blue) ![Platform](https://img.shields.io/badge/Platform-Meta%20Quest-green) ![Version](https://img.shields.io/badge/Version-1.10.1-orange)
 
-The MultiSet Quest SDK enables seamless integration of Visual Positioning System (VPS) capabilities into your Unity Meta Quest applications, providing accurate spatial localization and mesh visualization features.
+The MultiSet Quest SDK enables seamless integration of Visual Positioning System (VPS) capabilities into your Unity Meta Quest applications, providing accurate spatial localization, object tracking, and mesh visualization features.
 
 ## 📋 Prerequisites
 
@@ -48,6 +48,7 @@ The SDK automatically installs these essential packages:
 - Unity Cloud - glTFast (6.15.1)
 - Meta XR Core SDK (83.0.1)
 - Meta MR Utility Kit (83.0.1)
+- Meta XR Passthrough Camera Access (83.0.1)
 - XR Plugin Management (4.5.4)
 - OpenXR Plugin (1.16.1)
 
@@ -57,7 +58,16 @@ Get started quickly with our comprehensive examples:
 
 1. **Open Package Manager** → Find "MultiSet Quest SDK"
 2. **Navigate to Samples tab** → Click "Import" next to "Sample Scenes"
-3. **Samples location**: `Assets/Samples/MultiSet Quest SDK/[version]/Single Frame Localization/Scenes/`
+3. **Samples location**: `Assets/Samples/MultiSet Quest SDK/[version]/Sample Scenes/Scenes/`
+
+### Available Sample Scenes
+
+| Scene | Description |
+|-------|-------------|
+| **SingleFrameLocalization** | Basic VPS localization using single camera frames |
+| **Localization** | Continuous localization with real-time pose updates |
+| **ObjectTracking** | Track and localize specific 3D objects in your environment |
+| **Navigation** | AR navigation with POI (Point of Interest) support |
 
 The sample scenes demonstrate core SDK functionality and serve as implementation references.
 
@@ -115,6 +125,26 @@ Configure your localization settings in the sample scene:
 
 > 📍 **Obtain codes**: Get your Map/MapSet codes from the [MultiSet Developer Dashboard](https://developer.multiset.ai)
 
+### Step 4b: Object Tracking Configuration (Optional)
+
+For object tracking functionality:
+
+1. **Open sample scene**: `ObjectTracking.unity`
+2. **Select ObjectTrackingManager** GameObject in Hierarchy
+3. **Enter your Object Code(s)** in the ObjectTrackingManager component
+4. **Download Object Mesh** (Editor only):
+   - Select the **ObjectMeshDownloader** component
+   - Click **"Download Object Mesh"** button to fetch the 3D mesh
+   - The mesh will be placed under the **ObjectSpace** GameObject for scene setup
+
+| Component | Purpose |
+|-----------|---------|
+| **ObjectTrackingManager** | Manages object detection and tracking |
+| **ObjectMeshDownloader** | Downloads object meshes in Editor for AR scene setup |
+| **ObjectSpace** | Parent transform for tracked object visualization |
+
+> 📦 **Get Object Codes**: Create and manage trackable objects in the [MultiSet Developer Dashboard](https://developer.multiset.ai)
+
 ### Step 5: Camera Permissions
 
 The SDK automatically configures required permissions. Verify in `Assets/Plugins/Android/AndroidManifest.xml`:
@@ -160,8 +190,11 @@ Ensure your project meets these requirements:
 | Component | Purpose |
 |-----------|---------|
 | `MultiSetSdkManager` | Main SDK entry point and manager |
-| `SingleFrameLocalizationManager` | Handles VPS localization operations |
-| `MapMeshHandler` | Manages 3D mesh visualization |
+| `SingleFrameLocalizationManager` | Handles single-frame VPS localization |
+| `MapLocalizationManager` | Handles continuous VPS localization |
+| `ObjectTrackingManager` | Manages object detection and tracking |
+| `MapMeshHandler` | Manages 3D map mesh visualization |
+| `ObjectMeshDownloader` | Downloads object meshes in Editor mode |
 
 
 ## ✅ Setup Verification Checklist
@@ -181,7 +214,11 @@ Ensure your setup is complete:
 
 **After completing setup:**
 
-1. **Test Sample Scene**: Run `SingleFrameLocalization.unity` to verify everything works
+1. **Test Sample Scenes**: Run the sample scenes to verify functionality:
+   - `SingleFrameLocalization.unity` - Basic localization
+   - `Localization.unity` - Continuous localization
+   - `ObjectTracking.unity` - Object detection and tracking
+   - `Navigation.unity` - AR navigation with POIs
 2. **Explore Documentation**: Visit [docs.multiset.ai](https://docs.multiset.ai) for advanced features
 3. **Start Integration**: Implement SDK components in your own Unity scenes
 4. **Join Community**: Connect with other developers using the SDK
@@ -197,6 +234,7 @@ Ensure your setup is complete:
 | **Build Failures** | Run Project Validation and fix all issues before building |
 | **Credential Errors** | Verify Client ID and Secret from MultiSet dashboard |
 | **Localization Issues** | Ensure stable internet connection and correct map codes |
+| **Object Tracking Issues** | Verify Object Code is correct and mesh is downloaded |
 | **Camera Permission Denied** | Manually grant camera permissions in Quest settings |
 
 ### Debug Steps
@@ -239,9 +277,9 @@ This software is proprietary. See the LICENSE file for complete terms and condit
 
 ---
 
-**SDK Version**: 1.10.1  
-**Unity Compatibility**: 6000.3.3f1 
-**Platform**: Meta Quest 3/3S  
-**Last Updated**: July 2025
+**SDK Version**: 1.10.1
+**Unity Compatibility**: 6000.3.3f1
+**Platform**: Meta Quest 3/3S
+**Last Updated**: January 2026
 
 ---
