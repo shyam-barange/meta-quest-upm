@@ -14,11 +14,12 @@
         "url": "https://www.multiset.ai/"
     },
     "repository": {
-        "url": "https://github.com/MultiSet-AI/multiset-quest-sdk.git",
+        "url": "https://github.com/shyam-barange/meta-quest-upm.git",
         "type": "git"
     },
     "dependencies": {
         "com.meta.xr.sdk.core": "81.0.0",
+        "com.meta.xr.mrutilitykit": "83.0.1",
         "com.meta.xr.sdk.interaction.ovr": "81.0.0",
         "com.unity.cloud.draco": "5.4.2",
         "com.unity.cloud.gltfast": "6.15.1",
