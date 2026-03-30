@@ -25,5 +25,5 @@
   <uses-feature android:name="oculus.software.handtracking" android:required="false" />
   <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
   
-  <horizonos:uses-horizonos-sdk horizonos:minSdkVersion="68" horizonos:targetSdkVersion="77" />
+  <horizonos:uses-horizonos-sdk horizonos:minSdkVersion="68" horizonos:targetSdkVersion="83" />
 </manifest>
