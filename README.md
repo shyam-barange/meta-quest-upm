@@ -1,6 +1,6 @@
 # MultiSet Quest SDK - Installation Guide
 
-![MultiSet SDK](https://img.shields.io/badge/Unity-6000.3.11f1+-blue) ![Platform](https://img.shields.io/badge/Platform-Meta%20Quest-green) ![Version](https://img.shields.io/badge/Version-1.10.1-orange)
+![MultiSet SDK](https://img.shields.io/badge/Unity-6000.3.21f1+-blue) ![Platform](https://img.shields.io/badge/Platform-Meta%20Quest-green) ![Version](https://img.shields.io/badge/Version-1.15.2-orange)
 
 The MultiSet Quest SDK enables seamless integration of Visual Positioning System (VPS) capabilities into your Unity Meta Quest applications, providing accurate spatial localization, object tracking, and mesh visualization features.
 
@@ -10,7 +10,8 @@ Before you begin, make sure you have the following:
 
 | Requirement | Details |
 |-------------|---------|
-| **Unity Version** | Unity 6.0+ (Recommended: 6000.3.11f1) |
+| **Unity Version** | Unity 6.0+ (Recommended: 6000.3.21f1) |
+| **Render Pipeline** | Universal Render Pipeline (URP) — required by the SDK's mesh and occlusion shaders |
 | **Platform Support** | Android Build Support module |
 | **Target Device** | Meta Quest 3 or Quest 3S |
 | **Network** | Stable internet connection for VPS functionality |
@@ -22,8 +23,8 @@ Before you begin, make sure you have the following:
 ### Method 1: Git URL (Recommended)
 
 1. **Create or open your Unity project**
-   - New project: Select **3D (Built-In Render Pipeline)**
-   - Existing project: Ensure compatibility with Unity 6.0+
+   - New project: Select **3D (Universal Render Pipeline)**
+   - Existing project: Ensure compatibility with Unity 6.0+ and that URP is active
 
 2. **Add the SDK package**
    ```
@@ -44,13 +45,21 @@ Before you begin, make sure you have the following:
 
 The SDK automatically installs these essential packages:
 
-- Unity Cloud - Draco (5.4.3)
-- Unity Cloud - glTFast (6.15.1)
-- Meta XR Core SDK (83.0.1)
-- XR Plugin Management (4.5.4)
-- OpenXR Plugin (1.16.1)
+| Package | Version |
+|---------|---------|
+| Meta XR Core SDK (`com.meta.xr.sdk.core`) | 205.0.0 |
+| Meta MR Utility Kit (`com.meta.xr.mrutilitykit`) | 205.0.0 |
+| Meta XR Interaction SDK OVR (`com.meta.xr.sdk.interaction.ovr`) | 205.0.0 |
+| Unity Cloud - Draco (`com.unity.cloud.draco`) | 5.4.3 |
+| Unity Cloud - glTFast (`com.unity.cloud.gltfast`) | 6.15.1 |
+| XR Plugin Management (`com.unity.xr.management`) | 4.5.4 |
+| OpenXR Plugin (`com.unity.xr.openxr`) | 1.16.1 |
+| AI Navigation (`com.unity.ai.navigation`) | 2.0.14 |
+| Input System (`com.unity.inputsystem`) | 1.20.0 |
 
-> **Note:** If you need room scanning features (EffectMesh), install Meta MR Utility Kit separately via Package Manager.
+> **Note:** Meta MR Utility Kit is now a direct dependency and installs automatically — room scanning features (EffectMesh) need no separate install.
+
+> ⚠️ **Universal Render Pipeline is not installed automatically.** The SDK's mesh, outline, and occlusion shaders target URP. If your project uses the Built-In Render Pipeline, those materials will render magenta. Install `com.unity.render-pipelines.universal` and set an active URP asset under `Project Settings → Graphics`.
 
 ## 🎯 Import Sample Scenes
 
@@ -58,7 +67,10 @@ Get started quickly with our comprehensive examples:
 
 1. **Open Package Manager** → Find "MultiSet Quest SDK"
 2. **Navigate to Samples tab** → Click "Import" next to "Sample Scenes"
-3. **Samples location**: `Assets/Samples/MultiSet Quest SDK/[version]/Sample Scenes/Scenes/`
+3. **Samples location**: `Assets/Samples/MultiSet Quest SDK/[version]/Sample Scenes/`
+
+   Each scene sits in its own subfolder, for example
+   `Sample Scenes/SingleFrameLocalization/SingleFrameLocalization.unity`.
 
 ### Available Sample Scenes
 
@@ -79,7 +91,7 @@ The sample scenes demonstrate core SDK functionality and serve as implementation
 
 Navigate to the configuration file:
 ```
-Assets/Samples/MultiSet Quest SDK/[version]/Single Frame Localization/Resources/MultiSetConfig.asset
+Assets/Samples/MultiSet Quest SDK/[version]/Sample Scenes/Resources/MultiSetConfig.asset
 ```
 
 **Update your credentials:**
@@ -88,7 +100,15 @@ Client Id = "YOUR_CLIENT_ID_HERE"
 Client Secret = "YOUR_CLIENT_SECRET_HERE"
 ```
 
+| Field | Purpose |
+|-------|---------|
+| **Client Id** | Your MultiSet API client identifier |
+| **Client Secret** | Your MultiSet API client secret |
+| **Base Url** | API endpoint. Leave as `https://api.multiset.ai` unless directed otherwise |
+
 > 💡 **Get your credentials**: Visit [multiset.ai](https://multiset.ai) to obtain your Client ID and Secret
+
+> 🔐 **Supplying credentials at runtime**: set `runtimeAuthentication = true` on `MultisetSdkManager`, assign `clientId`/`clientSecret` yourself, then call `AuthenticateMultiSetSDK()` — useful when credentials should not ship inside the build.
 
 ![API Configuration](Screenshots/open-config.png)
 
@@ -125,13 +145,46 @@ Configure your localization settings in the sample scene:
 
 > 📍 **Obtain codes**: Get your Map/MapSet codes from the [MultiSet Developer Dashboard](https://developer.multiset.ai)
 
+**Query Mode:**
+
+| Mode | Behaviour |
+|------|-----------|
+| **VPS-1 (Standard)** | Default. Faster queries, suited to most maps |
+| **VPS-2 (Deep Search)** | Broader search, useful for large or visually repetitive spaces |
+
+**Localization behaviour options:**
+
+| Option | Default | Purpose |
+|--------|---------|---------|
+| **Auto Localize** | `true` | Begin localizing automatically once authenticated |
+| **Background Localization** | `true` | Keep re-localizing after the first success |
+| **Bg Localization Duration** | `60` | Seconds between background attempts |
+| **First Localization Until Success** | `true` | Silently retry the first localization until it succeeds |
+| **Confidence Check** | `false` | Reject responses below the confidence threshold |
+| **Confidence Threshold** | `0.3` | Minimum accepted confidence when the check is enabled |
+| **Show Alert** | `true` | Display built-in status UI |
+
+### Step 4a: Localization Hints (Optional)
+
+Hints narrow the search space, which can improve both speed and accuracy when you already know
+roughly where the user is. All are optional — leave them unset for unconstrained localization.
+
+| Field | Format | Purpose |
+|-------|--------|---------|
+| **Hint Map Codes** | list of map codes | Restrict the query to specific maps within a MapSet |
+| **Hint Position** | `"X,Y,Z"` | Approximate starting position |
+| **Hint Floor Height** | `"floor,ceiling"` (e.g. `"0,5"`) | Constrain the vertical band to search |
+| **Hint Radius** | metres (default `25`) | Search radius around the hinted position |
+| **Use 2D Filtering** | toggle | Filter candidates in 2D, ignoring height |
+| **Geo Coordinates In Response** | toggle | Include geographic coordinates in the localization response |
+
 ### Step 4b: Object Tracking Configuration (Optional)
 
 For object tracking functionality:
 
 1. **Open sample scene**: `ObjectTracking.unity`
 2. **Select ObjectTrackingManager** GameObject in Hierarchy
-3. **Enter your Object Code(s)** in the ObjectTrackingManager component
+3. **Enter your Object Code(s)** in the ObjectTrackingManager component — up to **10** objects can be tracked simultaneously
 4. **Download Object Mesh** (Editor only):
    - Select the **ObjectMeshDownloader** component
    - Click **"Download Object Mesh"** button to fetch the 3D mesh
@@ -189,7 +242,7 @@ Ensure your project meets these requirements:
 
 | Component | Purpose |
 |-----------|---------|
-| `MultiSetSdkManager` | Main SDK entry point and manager |
+| `MultisetSdkManager` | Main SDK entry point and manager |
 | `SingleFrameLocalizationManager` | Handles single-frame VPS localization |
 | `MapLocalizationManager` | Handles continuous VPS localization |
 | `ObjectTrackingManager` | Manages object detection and tracking |
@@ -201,7 +254,8 @@ Ensure your project meets these requirements:
 
 Ensure your setup is complete:
 
-- [ ] Unity version 6000.3.11f1+ installed
+- [ ] Unity version 6000.3.21f1+ installed
+- [ ] Universal Render Pipeline installed and an active URP asset assigned
 - [ ] Android platform selected and configured
 - [ ] OpenXR enabled in XR Plugin Management
 - [ ] API credentials configured in MultiSetConfig
@@ -233,7 +287,8 @@ Ensure your setup is complete:
 | **XR Plugin Problems** | Restart Unity after enabling OpenXR |
 | **Build Failures** | Run Project Validation and fix all issues before building |
 | **Credential Errors** | Verify Client ID and Secret from MultiSet dashboard |
-| **Localization Issues** | Ensure stable internet connection and correct map codes |
+| **Magenta / Pink Materials** | Project is on the Built-In Render Pipeline. Install URP and assign an active URP asset |
+| **Localization Issues** | Ensure stable internet connection and correct map codes. Consider narrowing the search with Localization Hints |
 | **Object Tracking Issues** | Verify Object Code is correct and mesh is downloaded |
 | **Camera Permission Denied** | Manually grant camera permissions in Quest settings |
 
@@ -277,9 +332,9 @@ This software is proprietary. See the LICENSE file for complete terms and condit
 
 ---
 
-**SDK Version**: 1.15.0
-**Unity Compatibility**: 6000.3.11f1
+**SDK Version**: 1.15.2
+**Unity Compatibility**: 6000.3.21f1
 **Platform**: Meta Quest 3/3S
-**Last Updated**: March 2026
+**Last Updated**: August 2026
 
 ---
