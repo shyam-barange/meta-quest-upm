@@ -1,8 +1,15 @@
 # MultiSet Quest SDK - Installation Guide
 
-![MultiSet SDK](https://img.shields.io/badge/Unity-6000.3.21f1+-blue) ![Platform](https://img.shields.io/badge/Platform-Meta%20Quest-green) ![Version](https://img.shields.io/badge/Version-1.15.2-orange)
+![MultiSet SDK](https://img.shields.io/badge/Unity-6000.3.21f1+-blue) ![Platform](https://img.shields.io/badge/Platform-Meta%20Quest-green) ![Version](https://img.shields.io/badge/Version-2.0.0-orange)
 
 The MultiSet Quest SDK enables seamless integration of Visual Positioning System (VPS) capabilities into your Unity Meta Quest applications, providing accurate spatial localization, object tracking, and mesh visualization features.
+
+## ✨ What's New in 2.0.0
+
+- **Query Mode for multi-frame localization**: `MapLocalizationManager` now supports VPS-2 (Deep Search)
+- **Reliable long sessions**: access tokens renew automatically before expiry, and a `401` re-authenticates and retries once
+
+See [CHANGELOG.md](CHANGELOG.md) for the full list and upgrade notes.
 
 ## 📋 Prerequisites
 
@@ -10,7 +17,7 @@ Before you begin, make sure you have the following:
 
 | Requirement | Details |
 |-------------|---------|
-| **Unity Version** | Unity 6.0+ (Recommended: 6000.3.21f1) |
+| **Unity Version** | Unity 6000.3.21f1+ (Tested: 6000.3.27f1) |
 | **Render Pipeline** | Universal Render Pipeline (URP) — required by the SDK's mesh and occlusion shaders |
 | **Platform Support** | Android Build Support module |
 | **Target Device** | Meta Quest 3 or Quest 3S |
@@ -24,7 +31,7 @@ Before you begin, make sure you have the following:
 
 1. **Create or open your Unity project**
    - New project: Select **3D (Universal Render Pipeline)**
-   - Existing project: Ensure compatibility with Unity 6.0+ and that URP is active
+   - Existing project: Ensure it runs Unity 6000.3.21f1+ and that URP is active
 
 2. **Add the SDK package**
    ```
@@ -34,6 +41,10 @@ Before you begin, make sure you have the following:
 3. **Enter the repository URL**
    ```
    https://github.com/MultiSet-AI/multiset-quest-sdk.git
+   ```
+   To pin a specific release, append its tag:
+   ```
+   https://github.com/MultiSet-AI/multiset-quest-sdk.git#v2.0.0
    ```
 
 4. **Verify installation**
@@ -50,12 +61,12 @@ The SDK automatically installs these essential packages:
 | Meta XR Core SDK (`com.meta.xr.sdk.core`) | 205.0.0 |
 | Meta MR Utility Kit (`com.meta.xr.mrutilitykit`) | 205.0.0 |
 | Meta XR Interaction SDK OVR (`com.meta.xr.sdk.interaction.ovr`) | 205.0.0 |
-| Unity Cloud - Draco (`com.unity.cloud.draco`) | 5.4.3 |
+| Unity Cloud - Draco (`com.unity.cloud.draco`) | 5.5.0 |
 | Unity Cloud - glTFast (`com.unity.cloud.gltfast`) | 6.15.1 |
-| XR Plugin Management (`com.unity.xr.management`) | 4.5.4 |
+| XR Plugin Management (`com.unity.xr.management`) | 4.6.1 |
 | OpenXR Plugin (`com.unity.xr.openxr`) | 1.16.1 |
-| AI Navigation (`com.unity.ai.navigation`) | 2.0.14 |
-| Input System (`com.unity.inputsystem`) | 1.20.0 |
+| AI Navigation (`com.unity.ai.navigation`) | 2.0.16 |
+| Input System (`com.unity.inputsystem`) | 1.20.1 |
 
 > **Note:** Meta MR Utility Kit is now a direct dependency and installs automatically — room scanning features (EffectMesh) need no separate install.
 
@@ -77,7 +88,7 @@ Get started quickly with our comprehensive examples:
 | Scene | Description |
 |-------|-------------|
 | **SingleFrameLocalization** | Basic VPS localization using single camera frames |
-| **Localization** | Continuous localization with real-time pose updates |
+| **Localization** | Multi-frame localization (several frames per query) for higher accuracy |
 | **ObjectTracking** | Track and localize specific 3D objects in your environment |
 | **Navigation** | AR navigation with POI (Point of Interest) support |
 
@@ -105,7 +116,6 @@ Client Secret = "YOUR_CLIENT_SECRET_HERE"
 | **Client Id** | Your MultiSet API client identifier |
 | **Client Secret** | Your MultiSet API client secret |
 | **Base Url** | API endpoint. Leave as `https://api.multiset.ai` unless directed otherwise |
-
 > 💡 **Get your credentials**: Visit [multiset.ai](https://multiset.ai) to obtain your Client ID and Secret
 
 > 🔐 **Supplying credentials at runtime**: set `runtimeAuthentication = true` on `MultisetSdkManager`, assign `clientId`/`clientSecret` yourself, then call `AuthenticateMultiSetSDK()` — useful when credentials should not ship inside the build.
@@ -145,7 +155,7 @@ Configure your localization settings in the sample scene:
 
 > 📍 **Obtain codes**: Get your Map/MapSet codes from the [MultiSet Developer Dashboard](https://developer.multiset.ai)
 
-**Query Mode:**
+**Query Mode** (available on both `SingleFrameLocalizationManager` and `MapLocalizationManager`):
 
 | Mode | Behaviour |
 |------|-----------|
@@ -184,7 +194,7 @@ For object tracking functionality:
 
 1. **Open sample scene**: `ObjectTracking.unity`
 2. **Select ObjectTrackingManager** GameObject in Hierarchy
-3. **Enter your Object Code(s)** in the ObjectTrackingManager component — up to **10** objects can be tracked simultaneously
+3. **Enter your Object Code(s)** in the ObjectTrackingManager component — up to **10** object codes; each tracking query searches all listed objects
 4. **Download Object Mesh** (Editor only):
    - Select the **ObjectMeshDownloader** component
    - Click **"Download Object Mesh"** button to fetch the 3D mesh
@@ -200,11 +210,15 @@ For object tracking functionality:
 
 ### Step 5: Camera Permissions
 
-The SDK automatically configures required permissions. Verify in `Assets/Plugins/Android/AndroidManifest.xml`:
+Passthrough camera access needs the `HEADSET_CAMERA` permission in your project's `Assets/Plugins/Android/AndroidManifest.xml`:
 
 ```xml
 <uses-permission android:name="horizonos.permission.HEADSET_CAMERA" />
 ```
+
+1. If the file does not exist, generate it with **Meta → Tools → Create store-compatible AndroidManifest.xml**
+2. On each Android build, the SDK checks the manifest and offers to add the permission if it is missing. Declining cancels the build, because the passthrough camera cannot run without it
+3. At runtime, the camera and scene permissions are requested when the app starts. Passthrough camera access requires Quest 3/3S on Horizon OS v74 or later
 
 ### Step 6: Quest Build Requirements
 
@@ -244,7 +258,7 @@ Ensure your project meets these requirements:
 |-----------|---------|
 | `MultisetSdkManager` | Main SDK entry point and manager |
 | `SingleFrameLocalizationManager` | Handles single-frame VPS localization |
-| `MapLocalizationManager` | Handles continuous VPS localization |
+| `MapLocalizationManager` | Handles multi-frame VPS localization |
 | `ObjectTrackingManager` | Manages object detection and tracking |
 | `MapMeshHandler` | Manages 3D map mesh visualization |
 | `ObjectMeshDownloader` | Downloads object meshes in Editor mode |
@@ -254,12 +268,12 @@ Ensure your project meets these requirements:
 
 Ensure your setup is complete:
 
-- [ ] Unity version 6000.3.21f1+ installed
+- [ ] Unity 6000.3.21f1+ installed
 - [ ] Universal Render Pipeline installed and an active URP asset assigned
 - [ ] Android platform selected and configured
 - [ ] OpenXR enabled in XR Plugin Management
 - [ ] API credentials configured in MultiSetConfig
-- [ ] Map/MapSet code entered in MultisetSdkManager
+- [ ] Map/MapSet code entered in the localization manager component
 - [ ] HEADSET_CAMERA permissions in Android manifest
 - [ ] Sample scene loads and runs without errors
 - [ ] Project Validation shows no critical issues
@@ -270,7 +284,7 @@ Ensure your setup is complete:
 
 1. **Test Sample Scenes**: Run the sample scenes to verify functionality:
    - `SingleFrameLocalization.unity` - Basic localization
-   - `Localization.unity` - Continuous localization
+   - `Localization.unity` - Multi-frame localization
    - `ObjectTracking.unity` - Object detection and tracking
    - `Navigation.unity` - AR navigation with POIs
 2. **Explore Documentation**: Visit [docs.multiset.ai](https://docs.multiset.ai) for advanced features
@@ -321,10 +335,12 @@ Join our developer community for tips, best practices, and peer support.
 
 ### Manual Updates
 
-Remove and re-add with latest Git URL:
+Git packages are locked to the commit they were installed from. To move to a specific release,
+edit the entry in `Packages/manifest.json` (or remove and re-add the package) with the release tag:
 ```
-https://github.com/MultiSet-AI/multiset-quest-sdk.git#latest
+https://github.com/MultiSet-AI/multiset-quest-sdk.git#v2.0.0
 ```
+Re-import the **Sample Scenes** after updating to get the latest samples.
 
 ## 📄 License
 
@@ -332,9 +348,9 @@ This software is proprietary. See the LICENSE file for complete terms and condit
 
 ---
 
-**SDK Version**: 1.15.2
-**Unity Compatibility**: 6000.3.21f1
+**SDK Version**: 2.0.0
+**Unity Compatibility**: 6000.3.21f1+
 **Platform**: Meta Quest 3/3S
-**Last Updated**: August 2026
+**Last Updated**: October 2026
 
 ---
